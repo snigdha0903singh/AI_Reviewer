@@ -135,8 +135,7 @@ async function generatePRComments(owner, repo, pull_number) {
   const analysis = await analyzeCodeChanges(codeChanges);
   let comments;
   try {
-      //check if the response is a str
-      //if yes, parse it as a json
+      
       comments = typeof analysis === 'string' ? JSON.parse(analysis) : analysis;
   } catch (error) {
       console.error("Failed to parse AI response as JSON:", analysis);
