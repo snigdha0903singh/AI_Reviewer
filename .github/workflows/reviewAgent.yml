@@ -28,4 +28,4 @@ jobs:
         PULL_NUMBER: ${{ github.event.number }}
         API_TOKEN: ${{ secrets.API_KEY_GITHUB }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: node agent.js
+      run: node src/agent.js
