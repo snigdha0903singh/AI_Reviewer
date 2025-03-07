@@ -105,9 +105,9 @@ async function generatePRComments(owner, repo, pull_number) {
 }
 
 // Example usage
-const owner = 'snigdha0903singh'//process.env.OWNER;
-const repo = 'ai_agent'//process.env.REPO;
-const pull_number = 1;//process.env.PULL_NUMBER;
+const owner = process.env.OWNER;
+const repo = process.env.REPO;
+const pull_number = process.env.PULL_NUMBER;
 
 generatePRComments(owner, repo, pull_number)
   .then(comments => {
