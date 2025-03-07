@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { RunnableLambda, RunnableMap } from "langchain/schema/runnable";
+import { RunnableLambda, RunnableMap } from "langchain/schema";
 import { Graph } from "@langchain/langgraph";
 
 const SYSTEM_PROMPT = `
