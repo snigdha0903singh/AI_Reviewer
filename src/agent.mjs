@@ -110,7 +110,7 @@ async function analyzeCodeChanges(codeChanges) {
   ]);
   aiMsg;
   const response=aiMsg.content
-  const cleanResponseText = response.
+  const cleanResponseText = response
     .replace(/```json/g, '')
     .replace(/```/g, '')
     .trim();                   
