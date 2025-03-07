@@ -19,7 +19,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-          npm install @octokit/rest @google/generative-ai @langchain/google-genai
+          npm install @octokit/rest @google/generative-ai @langchain/google-genai @langchain/langgraph @langchain/core
 
     - name: Run analysis script
       env:
