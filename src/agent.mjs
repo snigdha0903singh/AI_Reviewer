@@ -65,20 +65,38 @@ async function fetchPRCodeChanges(owner, repo, pull_number) {
 }
 
 async function addPRComment(owner, repo, prNumber, comments) {
+  //posts each suggestion as a separate comment
+  if (!Array.isArray(comments)) {
+    console.error("Expected an array of comments but got:", typeof comments);
+    return;
+  }
 
-    try {
-      const response = await octokit.issues.createComment({
-        owner,
-        repo,
-        issue_number: prNumber,
-        body: comments,
-      });
-      console.log("Comment added successfully:", comments);
-      //console.log(`comment is:${comments}`)
-    } catch (error) {
-      console.error(`Error adding comment: ${error.message}`);
+  try {
+    //loop through the json array
+    for (const comment of comments) {
+      //string format for each comment
+      const commentBody = `
+        *File:* ${comment.file}  
+        *Line:* ${comment.line}  
+        *Type:* ${comment.type}  
+
+        *Suggestion:*
+        ${comment.suggestion}
+            `;
+
+            //post the comment using the GitHub API
+            const response = await octokit.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: commentBody,
+            });
+
+            console.log("Comment added successfully for file:", comment.file);
     }
-  
+  } catch (error) {
+      console.error(`Error adding comment: ${error.message}`);
+  }
 }
 
 
@@ -90,18 +108,40 @@ async function analyzeCodeChanges(codeChanges) {
     ],
     ["human", codeChanges],
   ]);
-  aiMsg;
+  // aiMsg;
+  const cleanResponseText = aiMsg
+    .replace(/```json/g, '')
+    .replace(/```/g, '')
+    .trim();                   
+
+  let comments = [];
+  try {
+    //converts string to json array
+    comments = JSON.parse(cleanResponseText);  // Parse the cleaned JSON
+  } catch (error) {
+    console.error("Invalid JSON response from AI:", cleanResponseText);
+    throw new Error("AI response is not a valid JSON");
+  }
   // const prompt=SYSTEM_PROMPT+codeChanges;
   // const result = await model.generateContent(prompt);
   // const responseText = result.response.text();
-  return aiMsg.content;
+  return comments;
 }
 
 
 async function generatePRComments(owner, repo, pull_number) {
   const codeChanges = await fetchPRCodeChanges(owner, repo, pull_number);
   const analysis = await analyzeCodeChanges(codeChanges);
-  return analysis
+  let comments;
+  try {
+      //check if the response is a str
+      //if yes, parse it as a json
+      comments = typeof analysis === 'string' ? JSON.parse(analysis) : analysis;
+  } catch (error) {
+      console.error("Failed to parse AI response as JSON:", analysis);
+      throw error;
+  }
+  return comments;
 }
 
 // Example usage
