@@ -3,7 +3,7 @@ import {GoogleGenerativeAI} from "@google/generative-ai";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 
-//const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
 //const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 // dotenv.config();
 const SYSTEM_PROMPT = `
