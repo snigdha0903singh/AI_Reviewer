@@ -1,1 +1,5 @@
 # AI_Reviewer
+
+This is an AI Reviewer where on creating a PR or a push to an existing PR the a workflow will be triggered called Analyze Pull Request this workflow has an agent which extracts the PR code changes and analyzes the changes and adds comments based on 3 criterias Good Code Practices, Logical Errors, Probable Security Issues etc . 
+
+This branch i.e main only has a single agent Reviewer Code , where there could be issues like repetition of comments , hallucination by the LLM (suggesting illogical or unecessary comments) to avoid these things the branch multi-agent-langgraph has a multi-agent Reviewer where there are 3 agents , First one same as the single agent analyses changes and suggests comments these comments are then transferred to the next agent which again reviews the comments along with the code edits any unecessary or illogical comments (removes hallucinations) and then passes it on to the third agent that extracts existing comments and analyses merges any similar comments and then uploads to the PR finally 
